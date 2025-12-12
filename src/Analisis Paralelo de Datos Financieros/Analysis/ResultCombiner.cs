@@ -8,6 +8,7 @@ namespace Analisis_Paralelo_de_Datos_Financieros.Analysis
 {
     public class ResultCombiner
     {
+        // Combina los resultados parciales y genera un resumen estadístico
         public CombinedResult CombinarResultados(List<PartialResult> parcial)
         {
             if (parcial == null || parcial.Count == 0)
@@ -40,7 +41,7 @@ namespace Analisis_Paralelo_de_Datos_Financieros.Analysis
                 }
             }
 
-            var resultado = new CombinedResult
+            var r = new CombinedResult
             {
                 TotalCount = (int)totalCount,
                 TotalReturnsCount = (int)totalReturnsCount,
@@ -49,25 +50,26 @@ namespace Analisis_Paralelo_de_Datos_Financieros.Analysis
                 Maximo = max == double.MinValue ? 0 : max
             };
 
-            // Calcular varianza y desviación estándar
+            // Varianza
             if (totalCount > 1)
             {
-                double varianza = (sumSq - (sum * sum) / totalCount) / (totalCount - 1);
-                resultado.Varianza = varianza;
-                resultado.DesviacionEstandar = Math.Sqrt(Math.Max(0, varianza));
+                double var = (sumSq - (sum * sum) / totalCount) / (totalCount - 1);
+                r.Varianza = var;
+                r.DesviacionEstandar = Math.Sqrt(Math.Max(0, var));
             }
 
-            // Calcular volatilidad
+            // Volatilidad basada en retornos
             if (totalReturnsCount > 1)
             {
                 double varR = (sumRSq - (sumR * sumR) / totalReturnsCount) / (totalReturnsCount - 1);
-                resultado.Volatilidad = Math.Sqrt(Math.Max(0, varR));
+                r.Volatilidad = Math.Sqrt(Math.Max(0, varR));
             }
 
-            return resultado;
+            return r;
         }
     }
 
+    // Clase para guardar el resultado final combinado
     public class CombinedResult
     {
         public double Promedio { get; set; }
@@ -79,8 +81,4 @@ namespace Analisis_Paralelo_de_Datos_Financieros.Analysis
         public int TotalCount { get; set; }
         public int TotalReturnsCount { get; set; }
     }
-<<<<<<< Updated upstream
 }
-=======
-}
->>>>>>> Stashed changes
