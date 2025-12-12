@@ -67,6 +67,7 @@ namespace Analisis_Paralelo_de_Datos_Financieros.Analysis
                 Returns = returns,
                 AverageReturn = avgReturn
             };
+
         }
     }
 }
