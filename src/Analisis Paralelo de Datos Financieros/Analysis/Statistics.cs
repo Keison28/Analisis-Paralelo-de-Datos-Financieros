@@ -8,9 +8,11 @@ namespace Analisis_Paralelo_de_Datos_Financieros.Analysis
 {
     public static class Statistics
     {
-        // PROMEDIO
+        
 
         // v = a los datos en el dataset
+        
+        // PROMEDIO
         public static double Mean(List<double> data)
         {
             if (data == null || data.Count == 0)

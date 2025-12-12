@@ -7,9 +7,9 @@ namespace Analisis_Paralelo_de_Datos_Financieros.Data
 {
     public class DataLoader
     {
-        /// <summary>
-        /// Carga precios desde un archivo CSV con formato: Fecha[TAB]Precio
-        /// </summary>
+     
+        /// Carga precios desde un archivo CSV
+       
         public List<double> CargarPrecios(string rutaArchivo)
         {
             List<double> precios = new List<double>();

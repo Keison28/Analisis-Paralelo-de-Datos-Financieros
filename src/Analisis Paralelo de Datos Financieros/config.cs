@@ -21,9 +21,9 @@ namespace Analisis_Paralelo_de_Datos_Financieros
         public Config()
         {
             NucleosDisponibles = Environment.ProcessorCount;
-            NucleosAUsar = Math.Min(8, NucleosDisponibles); // Máximo 8 para evitar sobrecarga
-            TamanoLote = 10000; // Tamaño fijo para simplicidad
-            RutaArchivoCSV = "datos_financieros.csv"; // Nombre por defecto
+            NucleosAUsar = Math.Min(8, NucleosDisponibles);
+            TamanoLote = 10000;
+            RutaArchivoCSV = "datos_financieros.csv";
 
             Options = new ParallelOptions
             {
