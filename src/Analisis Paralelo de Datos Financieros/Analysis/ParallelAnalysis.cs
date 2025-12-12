@@ -35,8 +35,10 @@ namespace Analisis_Paralelo_de_Datos_Financieros.Analysis
             {
                 var pr = AnalizarLote(lote);
 
-                // Se protege la lista de resultados para evitar errores
-                lock (locker) resultados.Add(pr);
+                lock (locker)
+                {
+                    resultados.Add(pr);
+                }
             });
 
             return resultados;
@@ -88,6 +90,7 @@ namespace Analisis_Paralelo_de_Datos_Financieros.Analysis
             int returnsCount = Math.Max(0, n - 1);
             double sumR = 0.0;
             double sumRSq = 0.0;
+
             for (int i = 1; i < n; i++)
             {
                 double r = (lote[i] - lote[i - 1]) / lote[i - 1];
