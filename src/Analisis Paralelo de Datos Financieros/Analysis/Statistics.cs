@@ -77,10 +77,8 @@ namespace Analisis_Paralelo_de_Datos_Financieros.Analysis
 
             return max;
         }
-        /*
-        // -------------------------------------------------------
+     
         // RETORNOS
-        // -------------------------------------------------------
         public static double AverageReturn(List<double> data)
         {
             if (data == null || data.Count < 2)
@@ -100,7 +98,7 @@ namespace Analisis_Paralelo_de_Datos_Financieros.Analysis
             return sum / count;
         }
 
-        */
+     
 
 
         //Volatilidad, calcula la inestabilidad de los retornos
@@ -121,4 +119,4 @@ namespace Analisis_Paralelo_de_Datos_Financieros.Analysis
         }
     }
 }
-}
+
