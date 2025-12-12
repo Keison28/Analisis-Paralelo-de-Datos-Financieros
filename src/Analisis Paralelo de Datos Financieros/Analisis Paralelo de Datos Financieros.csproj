@@ -8,12 +8,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Data\DataLoader.cs" />
-  </ItemGroup>
+ 
 
-  <ItemGroup>
-    <None Include="Data\DataLoader.cs" />
-  </ItemGroup>
-
+  
 </Project>

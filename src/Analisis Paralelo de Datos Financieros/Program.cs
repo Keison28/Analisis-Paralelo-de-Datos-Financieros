@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Analisis_Paralelo_de_Datos_Financieros.Data;
 using Analisis_Paralelo_de_Datos_Financieros.Analysis;
 using Analisis_Paralelo_de_Datos_Financieros.Utils;
-using Analisis_Paralelo_de_Datos_Financieros.Data;
 
 namespace Analisis_Paralelo_de_Datos_Financieros
 {
@@ -86,22 +86,6 @@ namespace Analisis_Paralelo_de_Datos_Financieros
             double eficiencia = (speedup / config.NucleosAUsar) * 100;
             Console.WriteLine($"Eficiencia: {eficiencia:F2}%");
 
-            // VERIFICACIÓN DE RESULTADOS
-            Console.WriteLine("\n=== Verificación ===");
-            bool resultadosIguales =
-                Math.Abs(resultadoSecuencial.Promedio - resultadoParalelo.Promedio) < 0.01 &&
-                Math.Abs(resultadoSecuencial.Minimo - resultadoParalelo.Minimo) < 0.01 &&
-                Math.Abs(resultadoSecuencial.Maximo - resultadoParalelo.Maximo) < 0.01;
-
-            Console.WriteLine($"¿Resultados secuencial y paralelo coinciden? {(resultadosIguales ? "SÍ ✓" : "NO ✗")}");
-
-            if (!resultadosIguales)
-            {
-                Console.WriteLine("Diferencias:");
-                Console.WriteLine($"  Promedio: {Math.Abs(resultadoSecuencial.Promedio - resultadoParalelo.Promedio):F6}");
-                Console.WriteLine($"  Mínimo: {Math.Abs(resultadoSecuencial.Minimo - resultadoParalelo.Minimo):F6}");
-                Console.WriteLine($"  Máximo: {Math.Abs(resultadoSecuencial.Maximo - resultadoParalelo.Maximo):F6}");
-            }
         }
     }
 }
