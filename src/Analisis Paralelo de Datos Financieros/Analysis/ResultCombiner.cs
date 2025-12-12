@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Analisis_Paralelo_de_Datos_Financieros.Analysis
 {
     public class ResultCombiner
     {
-        // Combina los resultados parciales y genera un resumen estadístico
         public CombinedResult CombinarResultados(List<PartialResult> parcial)
         {
             if (parcial == null || parcial.Count == 0)
@@ -41,7 +37,7 @@ namespace Analisis_Paralelo_de_Datos_Financieros.Analysis
                 }
             }
 
-            var r = new CombinedResult
+            var resultado = new CombinedResult
             {
                 TotalCount = (int)totalCount,
                 TotalReturnsCount = (int)totalReturnsCount,
@@ -50,26 +46,25 @@ namespace Analisis_Paralelo_de_Datos_Financieros.Analysis
                 Maximo = max == double.MinValue ? 0 : max
             };
 
-            // Varianza
+            // Calcular varianza y desviación estándar
             if (totalCount > 1)
             {
-                double var = (sumSq - (sum * sum) / totalCount) / (totalCount - 1);
-                r.Varianza = var;
-                r.DesviacionEstandar = Math.Sqrt(Math.Max(0, var));
+                double varianza = (sumSq - (sum * sum) / totalCount) / (totalCount - 1);
+                resultado.Varianza = varianza;
+                resultado.DesviacionEstandar = Math.Sqrt(Math.Max(0, varianza));
             }
 
-            // Volatilidad basada en retornos
+            // Calcular volatilidad
             if (totalReturnsCount > 1)
             {
                 double varR = (sumRSq - (sumR * sumR) / totalReturnsCount) / (totalReturnsCount - 1);
-                r.Volatilidad = Math.Sqrt(Math.Max(0, varR));
+                resultado.Volatilidad = Math.Sqrt(Math.Max(0, varR));
             }
 
-            return r;
+            return resultado;
         }
     }
 
-    // Clase para guardar el resultado final combinado
     public class CombinedResult
     {
         public double Promedio { get; set; }

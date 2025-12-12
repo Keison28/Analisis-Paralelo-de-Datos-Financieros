@@ -9,17 +9,21 @@ namespace Analisis_Paralelo_de_Datos_Financieros
         public int NucleosDisponibles { get; private set; }
         public int NucleosAUsar { get; private set; }
 
-        // Tamaño de los lotes del dataset financiero
+        // Tamaño de los lotes
         public int TamanoLote { get; private set; }
 
-        // Opciones generales de paralelismo
+        // Opciones de paralelismo
         public ParallelOptions Options { get; private set; }
+
+        // Ruta del archivo CSV
+        public string RutaArchivoCSV { get; private set; }
 
         public Config()
         {
             NucleosDisponibles = Environment.ProcessorCount;
-            NucleosAUsar = NucleosDisponibles;
-            TamanoLote = 1000;
+            NucleosAUsar = Math.Min(8, NucleosDisponibles); // Máximo 8 para evitar sobrecarga
+            TamanoLote = 10000; // Tamaño fijo para simplicidad
+            RutaArchivoCSV = "datos_financieros.csv"; // Nombre por defecto
 
             Options = new ParallelOptions
             {
@@ -36,9 +40,14 @@ namespace Analisis_Paralelo_de_Datos_Financieros
             Options.MaxDegreeOfParallelism = n;
         }
 
-        public void SetTamanoLote(int tam)
+        public void SetRutaArchivo(string ruta)
         {
-            TamanoLote = Math.Max(1, tam);
+            RutaArchivoCSV = ruta;
+        }
+
+        public void SetTamanoLote(int tamano)
+        {
+            TamanoLote = Math.Max(100, tamano);
         }
     }
 }

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Analisis_Paralelo_de_Datos_Financieros.Analysis
@@ -17,7 +15,6 @@ namespace Analisis_Paralelo_de_Datos_Financieros.Analysis
             _tamanoLote = tamanoLote;
         }
 
-        // Ejecuta el análisis en paralelo: devuelve PartialResult por lote
         public List<PartialResult> Ejecutar(List<double> datos)
         {
             var resultados = new List<PartialResult>();
@@ -30,19 +27,19 @@ namespace Analisis_Paralelo_de_Datos_Financieros.Analysis
 
             object locker = new object();
 
-            // Se procesa cada lote al mismo tiempo
             Parallel.ForEach(lotes, opciones, lote =>
             {
                 var pr = AnalizarLote(lote);
 
-                // Se protege la lista de resultados para evitar errores
-                lock (locker) resultados.Add(pr);
+                lock (locker)
+                {
+                    resultados.Add(pr);
+                }
             });
 
             return resultados;
         }
 
-        // Divide datos en lotes
         private List<List<double>> DividirEnLotes(List<double> datos, int tamanoLote)
         {
             var lotes = new List<List<double>>();
@@ -56,7 +53,6 @@ namespace Analisis_Paralelo_de_Datos_Financieros.Analysis
             return lotes;
         }
 
-        // Calcula todas las cantidades necesarias por lote
         private PartialResult AnalizarLote(List<double> lote)
         {
             var pr = new PartialResult();
@@ -84,10 +80,11 @@ namespace Analisis_Paralelo_de_Datos_Financieros.Analysis
                 if (v > max) max = v;
             }
 
-            // retornos dentro del lote
+            // Calcular retornos
             int returnsCount = Math.Max(0, n - 1);
             double sumR = 0.0;
             double sumRSq = 0.0;
+
             for (int i = 1; i < n; i++)
             {
                 double r = (lote[i] - lote[i - 1]) / lote[i - 1];
