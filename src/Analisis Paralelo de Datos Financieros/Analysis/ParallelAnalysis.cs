@@ -17,13 +17,13 @@ namespace Analisis_Paralelo_de_Datos_Financieros.Analysis
             _tamanoLote = tamanoLote;
         }
 
-        // Ejecuta el análisis en paralelo dividiendo los datos en lotes
-        public List<double> Ejecutar(List<double> datos)
+        // Ejecuta el análisis en paralelo: devuelve PartialResult por lote
+        public List<PartialResult> Ejecutar(List<double> datos)
         {
-            List<double> resultados = new List<double>();
-            List<List<double>> lotes = DividirEnLotes(datos, _tamanoLote);
+            var resultados = new List<PartialResult>();
+            var lotes = DividirEnLotes(datos, _tamanoLote);
 
-            ParallelOptions opciones = new ParallelOptions
+            var opciones = new ParallelOptions
             {
                 MaxDegreeOfParallelism = _cantidadNucleos
             };
@@ -33,22 +33,19 @@ namespace Analisis_Paralelo_de_Datos_Financieros.Analysis
             // Se procesa cada lote al mismo tiempo
             Parallel.ForEach(lotes, opciones, lote =>
             {
-                double resultadoLote = AnalizarLote(lote);
+                var pr = AnalizarLote(lote);
 
                 // Se protege la lista de resultados para evitar errores
-                lock (locker)
-                {
-                    resultados.Add(resultadoLote);
-                }
+                lock (locker) resultados.Add(pr);
             });
 
             return resultados;
         }
 
-        // Divide el dataset en lotes del tamaño configurado
+        // Divide datos en lotes
         private List<List<double>> DividirEnLotes(List<double> datos, int tamanoLote)
         {
-            List<List<double>> lotes = new List<List<double>>();
+            var lotes = new List<List<double>>();
 
             for (int i = 0; i < datos.Count; i += tamanoLote)
             {
@@ -59,16 +56,55 @@ namespace Analisis_Paralelo_de_Datos_Financieros.Analysis
             return lotes;
         }
 
-        // Aplica el análisis financiero al lote
-        private double AnalizarLote(List<double> lote)
+        // Calcula todas las cantidades necesarias por lote
+        private PartialResult AnalizarLote(List<double> lote)
         {
-            double suma = 0;
+            var pr = new PartialResult();
 
-            foreach (double v in lote)
-                suma += v;
+            if (lote == null || lote.Count == 0)
+            {
+                pr.Count = 0;
+                pr.Min = 0;
+                pr.Max = 0;
+                return pr;
+            }
 
-            // temporal: se usa suma como ejemplo
-            return suma;
+            int n = lote.Count;
+            double sum = 0.0;
+            double sumSq = 0.0;
+            double min = double.MaxValue;
+            double max = double.MinValue;
+
+            for (int i = 0; i < n; i++)
+            {
+                double v = lote[i];
+                sum += v;
+                sumSq += v * v;
+                if (v < min) min = v;
+                if (v > max) max = v;
+            }
+
+            // retornos dentro del lote
+            int returnsCount = Math.Max(0, n - 1);
+            double sumR = 0.0;
+            double sumRSq = 0.0;
+            for (int i = 1; i < n; i++)
+            {
+                double r = (lote[i] - lote[i - 1]) / lote[i - 1];
+                sumR += r;
+                sumRSq += r * r;
+            }
+
+            pr.Count = n;
+            pr.Sum = sum;
+            pr.SumSq = sumSq;
+            pr.Min = min;
+            pr.Max = max;
+            pr.ReturnsCount = returnsCount;
+            pr.SumReturns = sumR;
+            pr.SumReturnsSq = sumRSq;
+
+            return pr;
         }
     }
 }
