@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Analisis_Paralelo_de_Datos_Financieros.Utils;
 
 namespace Analisis_Paralelo_de_Datos_Financieros.Analysis
 {
@@ -18,7 +19,8 @@ namespace Analisis_Paralelo_de_Datos_Financieros.Analysis
         public List<PartialResult> Ejecutar(List<double> datos)
         {
             var resultados = new List<PartialResult>();
-            var lotes = DividirEnLotes(datos, _tamanoLote);
+
+            var lotes = DataSplitter.DividirEnLotes(datos, _tamanoLote);
 
             var opciones = new ParallelOptions
             {
@@ -40,18 +42,7 @@ namespace Analisis_Paralelo_de_Datos_Financieros.Analysis
             return resultados;
         }
 
-        private List<List<double>> DividirEnLotes(List<double> datos, int tamanoLote)
-        {
-            var lotes = new List<List<double>>();
-
-            for (int i = 0; i < datos.Count; i += tamanoLote)
-            {
-                int cantidad = Math.Min(tamanoLote, datos.Count - i);
-                lotes.Add(datos.GetRange(i, cantidad));
-            }
-
-            return lotes;
-        }
+        
 
         private PartialResult AnalizarLote(List<double> lote)
         {

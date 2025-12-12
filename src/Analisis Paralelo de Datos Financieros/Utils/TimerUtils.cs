@@ -37,14 +37,7 @@ namespace Analisis_Paralelo_de_Datos_Financieros.Utils
                 return _stopwatch.ElapsedMilliseconds;
             }
 
-            /// Ejecuta un bloque de código y devuelve el tiempo que tardó.
-            public static long TimeAction(Action action)
-            {
-                Stopwatch sw = Stopwatch.StartNew();
-                action();
-                sw.Stop();
-                return sw.ElapsedMilliseconds;
-            }
+         
         }
 
 }
