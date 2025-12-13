@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Analisis_Paralelo_de_Datos_Financieros.Analysis
@@ -37,3 +37,4 @@ namespace Analisis_Paralelo_de_Datos_Financieros.Analysis
         public double DesviacionEstandar { get; set; }
     }
 }
+
